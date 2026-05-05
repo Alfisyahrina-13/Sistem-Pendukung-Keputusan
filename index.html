@@ -1,0 +1,2726 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR-DSS AI Ultimate</title>
+
+    <!-- FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- ICON -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- CHART -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- SWEET ALERT -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- XLSX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <!-- JSPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        :root {
+            --bg: #020617;
+            --card: rgba(255, 255, 255, 0.06);
+            --line: rgba(255, 255, 255, 0.08);
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --primary: #38bdf8;
+            --secondary: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+
+            background:
+                radial-gradient(circle at top left,
+                    rgba(56, 189, 248, .18),
+                    transparent 30%),
+
+                radial-gradient(circle at bottom right,
+                    rgba(139, 92, 246, .18),
+                    transparent 30%),
+
+                linear-gradient(135deg,
+                    #020617 0%,
+                    #071028 50%,
+                    #020617 100%);
+
+            color: var(--text);
+
+            overflow-x: hidden;
+
+            min-height: 100vh;
+
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .orb {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: .4;
+            animation: float 15s infinite linear;
+        }
+
+        .orb1 {
+            background: #0ea5e9;
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb2 {
+            background: #8b5cf6;
+            bottom: -100px;
+            right: -100px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(30px) rotate(180deg);
+            }
+
+            100% {
+                transform: translateY(0) rotate(360deg);
+            }
+        }
+
+        .login-page,
+        .app {
+            min-height: 100vh;
+        }
+
+        .login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-box {
+            width: 400px;
+            background: var(--card);
+            border: 1px solid var(--line);
+            backdrop-filter: blur(20px);
+            border-radius: 35px;
+            padding: 40px;
+            animation: fadeUp 1s ease;
+        }
+
+        .login-box {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-box::before {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background: rgba(56, 189, 248, .15);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            filter: blur(50px);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-box h1 {
+            font-size: 40px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .gradient {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-box p {
+            color: var(--muted);
+            margin-bottom: 30px;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, .06);
+            color: white;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: var(--muted);
+        }
+
+        .btn {
+
+            width: 100%;
+
+            padding: 16px;
+
+            border: none;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(135deg,
+                    #0ea5e9,
+                    #2563eb,
+                    #8b5cf6);
+
+            background-size: 200% 200%;
+
+            color: white;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .4s ease;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .btn:hover {
+
+            transform:
+                translateY(-3px) scale(1.02);
+
+            box-shadow:
+                0 15px 35px rgba(56, 189, 248, .25);
+
+            background-position: right center;
+
+        }
+
+        .app {
+            display: none;
+        }
+
+        .sidebar {
+
+            position: fixed;
+
+            width: 280px;
+
+            height: 100vh;
+
+            background:
+                linear-gradient(180deg,
+                    rgba(15, 23, 42, .92),
+                    rgba(2, 6, 23, .88));
+
+            backdrop-filter: blur(30px);
+
+            border-right:
+                1px solid rgba(255, 255, 255, .06);
+
+            padding: 35px;
+
+            box-shadow:
+                0 0 50px rgba(0, 0, 0, .35);
+
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 900;
+            margin-bottom: 50px;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .menu button {
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            text-align: left;
+            padding: 16px;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: .3s;
+            font-weight: 600;
+        }
+
+        .menu button:hover {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .menu button.active {
+
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+
+            color: white;
+
+            transform: translateX(5px);
+
+            box-shadow: 0 10px 30px rgba(14, 165, 233, .25);
+
+        }
+
+        .main {
+            margin-left: 270px;
+            padding: 40px;
+        }
+
+        .hero h1 {
+
+            font-size: 72px;
+
+            font-weight: 900;
+
+            line-height: 1.05;
+
+            letter-spacing: -2px;
+
+        }
+
+        .hero p {
+
+            color: var(--muted);
+
+            margin-top: 20px;
+
+            max-width: 760px;
+
+            line-height: 1.9;
+
+            font-size: 17px;
+
+        }
+
+        .dashboard {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+
+            background:
+                linear-gradient(135deg,
+                    rgba(255, 255, 255, .08),
+                    rgba(255, 255, 255, .03));
+
+            border: 1px solid rgba(255, 255, 255, .08);
+
+            border-radius: 32px;
+
+            padding: 35px;
+
+            backdrop-filter: blur(25px);
+
+            transition: .45s ease;
+
+            position: relative;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, .25);
+
+        }
+
+        .card:hover {
+
+            transform:
+                translateY(-10px) scale(1.02);
+
+            border-color:
+                rgba(56, 189, 248, .4);
+
+            box-shadow:
+                0 20px 50px rgba(14, 165, 233, .18);
+
+        }
+
+        .card h2 {
+            font-size: 40px;
+            margin: 15px 0;
+        }
+
+        .card p {
+            color: var(--muted);
+        }
+
+        .section {
+            margin-top: 60px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 40px 0 20px;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            margin-top: 10px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+        }
+
+        .glass {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            padding: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .action-grid {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .action-grid button {
+            width: auto;
+            padding: 14px 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+            margin-top: 25px;
+        }
+
+        th {
+            background: rgba(255, 255, 255, .08);
+            color: white;
+            padding: 18px;
+        }
+
+        th:first-child {
+            border-radius: 18px 0 0 18px;
+        }
+
+        th:last-child {
+            border-radius: 0 18px 18px 0;
+        }
+
+        td {
+            padding: 20px;
+            background: rgba(255, 255, 255, .03);
+            backdrop-filter: blur(10px);
+        }
+
+        tr td:first-child {
+            border-radius: 18px 0 0 18px;
+        }
+
+        tr td:last-child {
+            border-radius: 0 18px 18px 0;
+        }
+
+        tr {
+            transition: .35s;
+        }
+
+        tr:hover {
+            transform: scale(1.01);
+        }
+
+        .top3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .rank-card {
+
+            position: relative;
+            overflow: hidden;
+
+            border-radius: 28px;
+            padding: 28px;
+
+            backdrop-filter: blur(20px);
+
+            background: rgba(255, 255, 255, .04);
+
+            border: 1px solid rgba(255, 255, 255, .08);
+
+            transition: .45s ease;
+
+            min-height: 220px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .rank-card:hover {
+
+            transform: translateY(-8px) scale(1.02);
+
+            border-color: rgba(56, 189, 248, .25);
+
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, .35),
+                0 0 30px rgba(56, 189, 248, .08);
+
+        }
+
+        .rank-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            background: radial-gradient(circle,
+                    rgba(255, 255, 255, .12),
+                    transparent 70%);
+
+            top: -80px;
+            right: -80px;
+
+        }
+
+        .rank-card h1 {
+
+            font-size: 48px;
+            font-weight: 900;
+
+            margin-bottom: 10px;
+
+            opacity: .9;
+
+        }
+
+        .rank-card h2 {
+
+            font-size: 24px;
+            font-weight: 700;
+
+            margin-bottom: 10px;
+
+        }
+
+        .rank-card p {
+
+            color: #94a3b8;
+            font-size: 15px;
+
+        }
+
+        .rank-card i {
+
+            margin-top: 18px;
+            font-size: 30px;
+
+            opacity: .9;
+
+        }
+
+        /* JUARA 1 */
+
+        .gold {
+
+            background:
+                linear-gradient(145deg,
+                    rgba(59, 130, 246, .18),
+                    rgba(139, 92, 246, .12));
+
+            border: 1px solid rgba(59, 130, 246, .22);
+
+        }
+
+        /* JUARA 2 */
+
+        .silver {
+
+            background:
+                linear-gradient(145deg,
+                    rgba(148, 163, 184, .15),
+                    rgba(71, 85, 105, .12));
+
+            border: 1px solid rgba(148, 163, 184, .15);
+
+        }
+
+        /* JUARA 3 */
+
+        .bronze {
+
+            background:
+                linear-gradient(145deg,
+                    rgba(30, 41, 59, .7),
+                    rgba(15, 23, 42, .9));
+
+            border: 1px solid rgba(255, 255, 255, .05);
+
+        }
+
+        canvas {
+            margin-top: 20px;
+        }
+
+        .presentation {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px;
+            color: var(--muted);
+        }
+
+        @media(max-width:900px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .dashboard,
+            .top3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* SLIDER PREMIUM */
+
+        input {
+
+            width: 100%;
+
+            padding: 18px;
+
+            border: 1px solid rgba(255, 255, 255, .06);
+
+            border-radius: 20px;
+
+            background: rgba(255, 255, 255, .05);
+
+            color: white;
+
+            outline: none;
+
+            transition: .35s;
+
+            font-size: 15px;
+
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+
+            -webkit-appearance: none;
+
+            width: 24px;
+
+            height: 24px;
+
+            border-radius: 50%;
+
+            background: linear-gradient(135deg,
+                    #0ea5e9,
+                    #8b5cf6);
+
+            box-shadow: 0 0 20px rgba(56, 189, 248, .5);
+
+        }
+
+        input:focus {
+
+            border-color: #38bdf8;
+
+            box-shadow:
+                0 0 20px rgba(56, 189, 248, .2);
+
+            transform: scale(1.01);
+
+        }
+
+        .explode {
+
+            animation: explode .9s ease;
+
+        }
+
+        @keyframes explode {
+
+            0% {
+                transform: scale(.3);
+                opacity: 0;
+                filter: blur(15px);
+            }
+
+            60% {
+                transform: scale(1.08);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+            }
+
+        }
+
+        .flash {
+
+            animation: flash .8s ease;
+
+        }
+
+        @keyframes flash {
+
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+
+        }
+
+        .fade-in {
+
+            animation: fadeIn 1s ease;
+
+        }
+
+        @keyframes fadeIn {
+
+            from {
+
+                opacity: 0;
+                transform: translateY(30px);
+
+            }
+
+            to {
+
+                opacity: 1;
+                transform: translateY(0);
+
+            }
+
+        }
+
+        .ai-loader {
+
+            width: 90px;
+
+            height: 90px;
+
+            border-radius: 50%;
+
+            border: 5px solid rgba(255, 255, 255, .1);
+
+            border-top: 5px solid #38bdf8;
+
+            animation: spin 1s linear infinite;
+
+            margin: auto;
+        }
+
+        @keyframes spin {
+
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ranking-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                radial-gradient(circle at top,
+                    rgba(56, 189, 248, .12),
+                    transparent 40%),
+                rgba(2, 6, 23, .96);
+
+            backdrop-filter: blur(25px);
+
+            z-index: 99999;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transition: .6s;
+        }
+
+        .show-ranking {
+
+            opacity: 1;
+
+            visibility: visible;
+        }
+
+        .ranking-content {
+
+            width: 90%;
+
+            max-width: 1100px;
+
+            text-align: center;
+
+            animation: revealRanking 1s ease;
+        }
+
+        .ranking-content h1 {
+
+            font-size: 60px;
+
+            margin-bottom: 50px;
+
+            font-weight: 900;
+
+            background:
+                linear-gradient(135deg,
+                    #38bdf8,
+                    #8b5cf6);
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ranking-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 25px;
+        }
+
+        .ranking-grid .rank-card {
+
+            padding: 28px 22px;
+
+            border-radius: 28px;
+
+            font-size: 15px;
+
+            transform: scale(.9);
+
+            animation:
+                popModern .8s ease forwards;
+        }
+
+        .ranking-grid .rank-card h1 {
+
+            font-size: 48px;
+
+            margin-bottom: 10px;
+        }
+
+        .ranking-grid .rank-card h2 {
+
+            font-size: 22px;
+
+            margin-bottom: 8px;
+        }
+
+        .close-ranking {
+
+            margin-top: 50px;
+
+            padding: 16px 38px;
+
+            border: none;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(135deg,
+                    #38bdf8,
+                    #8b5cf6);
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        @keyframes revealRanking {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    scale(.7) translateY(60px);
+
+                filter: blur(12px);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    scale(1) translateY(0);
+
+                filter: blur(0);
+            }
+        }
+
+        @keyframes popModern {
+
+            0% {
+
+                opacity: 0;
+
+                transform:
+                    scale(.5) translateY(40px);
+            }
+
+            100% {
+
+                opacity: 1;
+
+                transform:
+                    scale(1) translateY(0);
+            }
+        }
+
+        .page {
+            display: none;
+            animation: fadePage .6s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadePage {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ai-insight {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-insight::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg,
+                    rgba(56, 189, 248, .08),
+                    rgba(139, 92, 246, .08));
+        }
+
+        .ai-insight h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .ai-insight p {
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .profile-popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, .92);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .profile-card {
+            width: 420px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 40px;
+            padding: 40px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            animation: fadeUp .5s ease;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            margin: auto;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 50px;
+            background:
+                linear-gradient(135deg,
+                    #0ea5e9,
+                    #8b5cf6);
+            margin-bottom: 25px;
+        }
+
+        .profile-score {
+            margin: 25px 0;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .ranking-overlay {
+            backdrop-filter: blur(30px);
+        }
+
+        .ranking-content {
+            animation: tara 1s ease;
+        }
+
+        @keyframes tara {
+
+            0% {
+                transform: scale(.5);
+                opacity: 0;
+                filter: blur(20px);
+            }
+
+            70% {
+                transform: scale(1.04);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .rank-icon {
+
+            width: 70px;
+            height: 70px;
+
+            border-radius: 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 20px;
+
+            background: rgba(255, 255, 255, .05);
+
+            border: 1px solid rgba(255, 255, 255, .08);
+
+            font-size: 28px;
+
+            backdrop-filter: blur(15px);
+
+        }
+
+        .profile-modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(2, 6, 23, .75);
+
+            backdrop-filter: blur(18px);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            z-index: 9999;
+
+            animation: fadeModal .4s ease;
+
+        }
+
+        .profile-card {
+
+            width: 420px;
+
+            border-radius: 35px;
+
+            background: rgba(255, 255, 255, .06);
+
+            border: 1px solid rgba(255, 255, 255, .08);
+
+            padding: 40px;
+
+            text-align: center;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .profile-avatar {
+
+            width: 110px;
+
+            height: 110px;
+
+            border-radius: 50%;
+
+            margin: auto;
+
+            margin-bottom: 20px;
+
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 45px;
+
+        }
+
+        .profile-score {
+
+            font-size: 52px;
+
+            font-weight: 900;
+
+            margin-top: 20px;
+
+        }
+
+        .close-modal {
+
+            position: absolute;
+
+            top: 15px;
+
+            right: 15px;
+
+            width: 40px;
+
+            height: 40px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: rgba(255, 255, 255, .08);
+
+            color: white;
+
+            cursor: pointer;
+
+        }
+
+        @keyframes fadeModal {
+
+            from {
+                opacity: 0;
+                transform: scale(.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+        }
+
+        /* =========================
+   MOBILE PREMIUM RESPONSIVE
+========================= */
+
+        @media(max-width:768px) {
+
+            body {
+                overflow-x: hidden;
+            }
+
+            .sidebar {
+
+                width: 100%;
+
+                height: auto;
+
+                position: relative;
+
+                padding: 20px;
+
+                border-right: none;
+
+                border-bottom: 1px solid rgba(255, 255, 255, .06);
+
+            }
+
+            .logo {
+
+                font-size: 24px;
+
+                text-align: center;
+
+                margin-bottom: 25px;
+
+            }
+
+            .menu {
+
+                flex-direction: row;
+
+                overflow-x: auto;
+
+                gap: 10px;
+
+                padding-bottom: 5px;
+
+            }
+
+            .menu button {
+
+                min-width: 140px;
+
+                text-align: center;
+
+                font-size: 14px;
+
+                padding: 14px;
+
+                border-radius: 16px;
+
+                white-space: nowrap;
+
+            }
+
+            .main {
+
+                margin-left: 0;
+
+                padding: 20px;
+
+            }
+
+            .hero h1 {
+
+                font-size: 34px;
+
+                line-height: 1.2;
+
+            }
+
+            .hero p {
+
+                font-size: 14px;
+
+                line-height: 1.8;
+
+            }
+
+            .dashboard {
+
+                grid-template-columns: 1fr;
+
+                gap: 18px;
+
+            }
+
+            .card {
+
+                padding: 24px;
+
+                border-radius: 24px;
+
+            }
+
+            .card h2 {
+
+                font-size: 32px;
+
+            }
+
+            .section-title {
+
+                font-size: 24px;
+
+            }
+
+            .glass {
+
+                padding: 20px;
+
+                border-radius: 24px;
+
+            }
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            input {
+
+                padding: 15px;
+
+                font-size: 14px;
+
+            }
+
+            .action-grid {
+
+                flex-direction: column;
+
+            }
+
+            .action-grid button {
+
+                width: 100%;
+
+            }
+
+            table {
+
+                min-width: 900px;
+
+            }
+
+            .glass {
+
+                overflow-x: auto;
+
+            }
+
+            th,
+            td {
+
+                padding: 14px;
+
+                font-size: 13px;
+
+            }
+
+            .top3 {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .rank-card {
+
+                padding: 24px;
+
+                border-radius: 24px;
+
+            }
+
+            .rank-card h1 {
+
+                font-size: 38px;
+
+            }
+
+            .rank-card h2 {
+
+                font-size: 24px;
+
+            }
+
+            canvas {
+
+                width: 100% !important;
+
+                height: auto !important;
+
+            }
+
+            .celebration-content h1 {
+
+                font-size: 42px;
+
+            }
+
+            .celebration-content h2 {
+
+                font-size: 28px;
+
+            }
+
+            .celebration-content p {
+
+                font-size: 14px;
+
+                padding: 0 20px;
+
+            }
+
+            .profile-card {
+
+                width: 92%;
+
+                padding: 25px;
+
+                border-radius: 28px;
+
+            }
+
+            .profile-score {
+
+                font-size: 42px;
+
+            }
+
+            footer {
+
+                padding: 30px 15px;
+
+                font-size: 13px;
+
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+
+    <!-- LOGIN -->
+    <section class="login-page" id="loginPage">
+
+        <div class="login-box">
+
+            <h1 class="gradient">Sistem Pendukung Keputusan</h1>
+
+            <p>
+                Pemilihan Karyawan Terbaik
+            </p>
+
+            <input type="text" id="username" placeholder="Nama Pengguna">
+            <input type="password" id="password" placeholder="Kata Sandi">
+
+            <div style="margin-bottom:20px;">
+
+                <input type="checkbox" onclick="togglePassword()">
+
+                Tampilkan Kata Sandi
+
+            </div>
+
+            <button class="btn" onclick="login()">
+                Masuk Beranda
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- APP -->
+    <section class="app" id="app">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="logo gradient">
+                Pemilihan Karyawan Terbaik
+            </div>
+
+            <div class="menu">
+
+                <button onclick="showPage('dashboardPage')">
+                    <i class="fa-solid fa-house"></i>
+                    Beranda
+                </button>
+
+                <button onclick="showPage('employeePage')">
+                    <i class="fa-solid fa-users"></i>
+                    Data Karyawan
+                </button>
+
+                <button onclick="showPage('analyticsPage')">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Analisis
+                </button>
+
+                <button onclick="showPage('rankingPage')">
+                    <i class="fa-solid fa-ranking-star"></i>
+                    Perangkingan
+                </button>
+
+                <button onclick="presentationMode()">
+                    <i class="fa-solid fa-display"></i>
+                    Presentasi
+                </button>
+
+                <button onclick="logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Keluar
+                </button>
+
+            </div>
+
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main">
+
+            <section class="page active" id="dashboardPage">
+
+                <!-- HERO -->
+                <section class="hero" id="dashboardSection">
+
+                    <h1>
+                        Sistem
+                        <span class="gradient">Pendukung Keputusan</span>
+                    </h1>
+
+                    <p>
+                        Sistem Pendukung Keputusan Pemilihan Karyawan Terbaik
+                        menggunakan metode SAW (Simple Additive Weighting)
+                        dengan tampilan modern, profesional, dan responsif.
+                    </p>
+
+                </section>
+
+                <!-- DASHBOARD -->
+                <section class="dashboard fade-in">
+
+                    <div class="card">
+                        <i class="fa-solid fa-users fa-2x"></i>
+                        <h2 id="totalEmployee">0</h2>
+                        <p>Total Karyawan</p>
+                    </div>
+
+                    <div class="card">
+                        <i class="fa-solid fa-brain fa-2x"></i>
+                        <h2>AI</h2>
+                        <p>Rekomendasi</p>
+                    </div>
+
+                    <div class="card">
+                        <i class="fa-solid fa-chart-simple fa-2x"></i>
+                        <h2>SAW</h2>
+                        <p>Perhitungan SAW</p>
+                    </div>
+
+                    <div class="card">
+                        <i class="fa-solid fa-display fa-2x"></i>
+                        <h2>LIVE</h2>
+                        <p>Presentation Mode</p>
+                    </div>
+
+                </section>
+            </section>
+
+            <section class="section">
+
+                <h2 class="section-title">
+                    AI Recommendation Engine
+                </h2>
+
+                <div class="glass ai-insight" id="aiInsight">
+
+                    <h2>
+                        AI sedang menunggu data...
+                    </h2>
+
+                    <p>
+                        Tambahkan data dan lakukan perhitungan.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <!-- INPUT -->
+            <section class="section">
+
+                <section class="page" id="employeePage">
+                    <h2 class="section-title">
+                        Pengaturan Bobot SAW
+                    </h2>
+
+                    <section class="section">
+
+                        <div class="glass">
+
+                            <div class="form-grid">
+
+                                <div>
+                                    <label>Disiplin</label>
+                                    <input type="range" id="w1" min="0" max="100" value="30" oninput="updateBobot()">
+
+                                    <h3 id="v1">30%</h3>
+                                </div>
+
+                                <div>
+                                    <label>Kehadiran</label>
+                                    <input type="range" id="w2" min="0" max="100" value="20" oninput="updateBobot()">
+
+                                    <h3 id="v2">20%</h3>
+                                </div>
+
+                                <div>
+                                    <label>Kerjasama</label>
+                                    <input type="range" id="w3" min="0" max="100" value="15" oninput="updateBobot()">
+
+                                    <h3 id="v3">15%</h3>
+                                </div>
+
+                                <div>
+                                    <label>Loyalitas</label>
+                                    <input type="range" id="w4" min="0" max="100" value="15" oninput="updateBobot()">
+
+                                    <h3 id="v4">15%</h3>
+                                </div>
+
+                                <div>
+                                    <label>Produktivitas</label>
+                                    <input type="range" id="w5" min="0" max="100" value="20" oninput="updateBobot()">
+
+                                    <h3 id="v5">20%</h3>
+                                </div>
+
+                            </div>
+
+                            <br>
+
+                            <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:20px;
+            flex-wrap:wrap;
+        ">
+
+                                <h2>
+                                    Total Bobot :
+                                    <span id="totalBobot" class="gradient">
+                                        100%
+                                    </span>
+                                </h2>
+
+                                <button class="btn" onclick="resetBobot()">
+                                    Reset Bobot
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div id="employeeSection"></div>
+
+                        <h2 class="section-title">
+                            Input Data Karyawan
+                        </h2>
+
+                        <div class="glass">
+
+                            <div class="form-grid">
+
+                                <input type="text" id="nama" placeholder="Nama Karyawan">
+
+                                <input type="number" id="c1" placeholder="Disiplin">
+
+                                <input type="number" id="c2" placeholder="Kehadiran">
+
+                                <input type="number" id="c3" placeholder="Kerjasama">
+
+                                <input type="number" id="c4" placeholder="Loyalitas">
+
+                                <input type="number" id="c5" placeholder="Produktivitas">
+
+                            </div>
+
+                            <div class="action-grid">
+
+                                <button class="btn" onclick="tambahData()">
+                                    Tambah Data
+                                </button>
+
+                                <button class="btn" onclick="exportPDF()">
+                                    Export PDF
+                                </button>
+
+                                <button class="btn" onclick="exportExcel()">
+                                    Export Excel
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                    <!-- TABLE -->
+                    <section class="section">
+
+                        <h2 class="section-title">
+                            Hasil Perhitungan SAW
+                        </h2>
+
+                        <div class="glass">
+
+                            <table>
+
+                                <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Disiplin</th>
+                                        <th>Kehadiran</th>
+                                        <th>Kerjasama</th>
+                                        <th>Loyalitas</th>
+                                        <th>Produktivitas</th>
+                                        <th>Nilai SAW</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="tbody"></tbody>
+
+                            </table>
+
+                        </div>
+
+                    </section>
+                </section>
+
+
+                <!-- TOP -->
+                <section class="section">
+
+                    <div id="rankingSection"></div>
+                    <section class="page" id="rankingPage">
+                        <h2 class="section-title">
+                            Karyawan Terbaik
+                        </h2>
+
+                        <div style="
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:25px;
+">
+
+                            <button class="btn" onclick="hitungSAW()" style="
+            width:auto;
+            padding:16px 35px;
+            font-size:16px;
+            background:linear-gradient(135deg,#8b5cf6,#0ea5e9);
+            box-shadow:0 0 25px rgba(139,92,246,.4);
+        ">
+
+                                <i class="fa-solid fa-bolt"></i>
+                                Hitung Ranking AI
+
+                            </button>
+
+                        </div>
+
+                        <div class="top3" id="top3"></div>
+
+                    </section>
+                </section>
+                <!-- CHART -->
+                <section class="section">
+
+                    <div id="analyticsSection"></div>
+                    <section class="page" id="analyticsPage">
+                        <h2 class="section-title">
+                            AI Analytics
+                        </h2>
+
+                        <div class="glass">
+                            <canvas id="chart"></canvas>
+                        </div>
+
+                    </section>
+                </section>
+                <footer>
+                    © 2026 Sistem Pendukung Keputusan Pemilihan Karyawan Terbaik
+                    Dikembangkan oleh Almifara Sakedia
+                </footer>
+
+        </main>
+
+    </section>
+
+    <script>
+        function showPage(pageId) {
+
+            document.querySelectorAll('.page')
+                .forEach(page => {
+                    page.classList.remove('active');
+                });
+
+            document.getElementById(pageId)
+                .classList.add('active');
+        }
+        // UPDATE BOBOT
+
+        function updateBobot() {
+
+            let w1 = parseInt(document.getElementById('w1').value);
+            let w2 = parseInt(document.getElementById('w2').value);
+            let w3 = parseInt(document.getElementById('w3').value);
+            let w4 = parseInt(document.getElementById('w4').value);
+            let w5 = parseInt(document.getElementById('w5').value);
+
+            document.getElementById('v1').innerHTML = w1 + "%";
+            document.getElementById('v2').innerHTML = w2 + "%";
+            document.getElementById('v3').innerHTML = w3 + "%";
+            document.getElementById('v4').innerHTML = w4 + "%";
+            document.getElementById('v5').innerHTML = w5 + "%";
+
+            let total = w1 + w2 + w3 + w4 + w5;
+
+            document.getElementById('totalBobot').innerHTML =
+                total + "%";
+
+            // VALIDASI
+
+            if (total != 100) {
+
+                document.getElementById('totalBobot').style.color =
+                    "#ef4444";
+
+            } else {
+
+                document.getElementById('totalBobot').style.color =
+                    "#22c55e";
+
+            }
+
+        }
+
+        // RESET
+
+        function resetBobot() {
+
+            document.getElementById('w1').value = 30;
+            document.getElementById('w2').value = 20;
+            document.getElementById('w3').value = 15;
+            document.getElementById('w4').value = 15;
+            document.getElementById('w5').value = 20;
+
+            updateBobot();
+
+        }
+
+
+        // LOGIN
+
+        function login() {
+
+            let user = document.getElementById('username').value;
+            let pass = document.getElementById('password').value;
+
+            if (user === "admin" && pass === "admin123") {
+
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Berhasil',
+                    background: '#0f172a',
+                    color: 'white'
+                });
+
+            } else {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Gagal',
+                    text: 'Username atau password salah',
+                    background: '#0f172a',
+                    color: 'white'
+                });
+
+            }
+
+        }
+
+        function logout() {
+
+            location.reload();
+
+        }
+
+        function scrollSection(id, element) {
+
+            // hapus active semua
+            document.querySelectorAll('.menu button')
+                .forEach(btn => {
+
+                    btn.classList.remove('active');
+
+                });
+
+            // tambah active
+            element.classList.add('active');
+
+            // scroll smooth
+            document.getElementById(id)
+                .scrollIntoView({
+
+                    behavior: 'smooth'
+
+                });
+
+        }
+
+        // DATA
+
+        let data = JSON.parse(localStorage.getItem('employees')) || [];
+        let editIndex = -1;
+
+        function tambahData() {
+
+            let nama = document.getElementById('nama').value;
+            let c1 = parseFloat(document.getElementById('c1').value);
+            let c2 = parseFloat(document.getElementById('c2').value);
+            let c3 = parseFloat(document.getElementById('c3').value);
+            let c4 = parseFloat(document.getElementById('c4').value);
+            let c5 = parseFloat(document.getElementById('c5').value);
+
+            if (
+                nama === "" ||
+                isNaN(c1) ||
+                isNaN(c2) ||
+                isNaN(c3) ||
+                isNaN(c4) ||
+                isNaN(c5)
+            ) {
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Lengkapi semua data',
+                    background: '#0f172a',
+                    color: 'white'
+                });
+
+                return;
+            }
+
+            let employee = {
+                nama,
+                c1,
+                c2,
+                c3,
+                c4,
+                c5,
+                score: null
+            };
+
+            if (editIndex >= 0) {
+
+                data[editIndex] = employee;
+                editIndex = -1;
+
+            } else {
+
+                data.push(employee);
+
+            }
+
+            // simpan localStorage
+            localStorage.setItem(
+                'employees',
+                JSON.stringify(data)
+            );
+
+            // render langsung TANPA refresh
+            renderTable();
+
+            // update total employee
+            document.getElementById('totalEmployee').innerHTML =
+                data.length;
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Data berhasil ditambahkan',
+                background: '#0f172a',
+                color: 'white'
+            });
+
+            clearForm();
+        }
+
+        function hitungSAW() {
+
+            if (data.length < 1) {
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Belum ada data',
+                    background: '#0f172a',
+                    color: 'white'
+                });
+
+                return;
+            }
+
+            Swal.fire({
+
+                title: 'AI Sedang Menghitung...',
+
+                html: `
+        <div class="ai-loader"></div>
+
+        <p style="
+            margin-top:25px;
+            color:#94a3b8;
+            font-size:15px;
+        ">
+            Menganalisa performa seluruh karyawan...
+        </p>
+        `,
+
+                background: '#020617',
+                color: 'white',
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
+
+            setTimeout(() => {
+
+                prosesSAW();
+                showFullscreenRanking();
+
+                Swal.close();
+
+                document.getElementById('rankingOverlay')
+                    .classList.add('show-ranking');
+
+            }, 2200);
+        }
+
+        function prosesSAW() {
+
+            if (data.length === 0) return;
+
+            let total =
+                parseInt(document.getElementById('w1').value) +
+                parseInt(document.getElementById('w2').value) +
+                parseInt(document.getElementById('w3').value) +
+                parseInt(document.getElementById('w4').value) +
+                parseInt(document.getElementById('w5').value);
+
+            if (total !== 100) {
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Total bobot harus 100%',
+                    background: '#0f172a',
+                    color: 'white'
+                });
+
+                return;
+            }
+
+            let w1 =
+                parseInt(document.getElementById('w1').value) / 100;
+
+            let w2 =
+                parseInt(document.getElementById('w2').value) / 100;
+
+            let w3 =
+                parseInt(document.getElementById('w3').value) / 100;
+
+            let w4 =
+                parseInt(document.getElementById('w4').value) / 100;
+
+            let w5 =
+                parseInt(document.getElementById('w5').value) / 100;
+
+            let max1 = Math.max(...data.map(d => d.c1));
+            let max2 = Math.max(...data.map(d => d.c2));
+            let max3 = Math.max(...data.map(d => d.c3));
+            let max4 = Math.max(...data.map(d => d.c4));
+            let max5 = Math.max(...data.map(d => d.c5));
+
+            data.forEach(d => {
+
+                let r1 = d.c1 / max1;
+                let r2 = d.c2 / max2;
+                let r3 = d.c3 / max3;
+                let r4 = d.c4 / max4;
+                let r5 = d.c5 / max5;
+
+                d.score =
+                    (r1 * w1) +
+                    (r2 * w2) +
+                    (r3 * w3) +
+                    (r4 * w4) +
+                    (r5 * w5);
+
+            });
+
+            // ranking
+            data.sort((a, b) => b.score - a.score);
+
+            localStorage.setItem(
+                'employees',
+                JSON.stringify(data)
+            );
+
+            renderTable();
+            renderTop();
+            animateNumbers();
+            renderChart();
+            renderAIInsight();
+
+            document.getElementById('totalEmployee').innerHTML =
+                data.length;
+        }
+        function closeRanking() {
+
+            document.getElementById('rankingOverlay')
+                .classList.remove('show-ranking');
+        }
+        // TABLE
+
+        function renderTable() {
+
+            let tbody = document.getElementById('tbody');
+
+            tbody.innerHTML = "";
+
+            data.forEach((d, index) => {
+
+                tbody.innerHTML += `
+        
+        <tr>
+            <td>${d.nama}</td>
+            <td>${d.c1}</td>
+            <td>${d.c2}</td>
+            <td>${d.c3}</td>
+            <td>${d.c4}</td>
+            <td>${d.c5}</td>
+
+            <td>
+                ${d.score !== null
+                        ? d.score.toFixed(3)
+                        : '-'}
+            </td>
+
+            <td>
+                
+<button onclick="openProfile(${index})"
+style="
+padding:10px 14px;
+border:none;
+border-radius:12px;
+background:#8b5cf6;
+color:white;
+cursor:pointer;
+margin-right:5px;
+">
+<i class="fa-solid fa-id-card"></i>
+</button>
+                <button 
+                    onclick="editData(${index})"
+                    style="
+                        padding:10px 14px;
+                        border:none;
+                        border-radius:12px;
+                        background:#0ea5e9;
+                        color:white;
+                        cursor:pointer;
+                        margin-right:5px;
+                    ">
+                    <i class="fa-solid fa-pen"></i>
+                </button>
+
+                <button 
+                    onclick="hapusData(${index})"
+                    style="
+                        padding:10px 14px;
+                        border:none;
+                        border-radius:12px;
+                        background:#ef4444;
+                        color:white;
+                        cursor:pointer;
+                    ">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+
+            </td>
+
+        </tr>
+        `;
+            });
+        }
+        function renderTop() {
+
+            let top = document.getElementById('top3');
+            let fullscreen = document.getElementById('rankingFullscreen');
+
+            top.innerHTML = "";
+            fullscreen.innerHTML = "";
+
+            let colors = ['gold', 'silver', 'bronze'];
+
+            let icons = [
+                'fa-crown',
+                'fa-medal',
+                'fa-award'
+            ];
+
+            data.slice(0, 3).forEach((d, i) => {
+
+                let card = `
+
+        <div class="rank-card ${colors[i]}">
+
+            <h1>#${i + 1}</h1>
+
+            <h2>${d.nama}</h2>
+
+            <p class="score-number" data-score="${d.score.toFixed(3)}">
+    0.000
+</p>
+
+            <br>
+
+            <div class="rank-icon">
+    <i class="fa-solid fa-crown"></i>
+</div>
+
+        </div>
+        `;
+
+                top.innerHTML += card;
+                fullscreen.innerHTML += card;
+            });
+        }
+        function animateNumbers() {
+
+            const numbers = document.querySelectorAll('.score-number');
+
+            numbers.forEach(num => {
+
+                let target = parseFloat(num.dataset.score);
+
+                let current = 0;
+
+                let increment = target / 40;
+
+                let interval = setInterval(() => {
+
+                    current += increment;
+
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(interval);
+                    }
+
+                    num.innerHTML = current.toFixed(3);
+
+                }, 25);
+
+            });
+
+        }
+
+        function hapusData(index) {
+
+            Swal.fire({
+                title: 'Hapus data?',
+                text: 'Data tidak bisa dikembalikan',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya Hapus',
+                cancelButtonText: 'Batal',
+                background: '#0f172a',
+                color: 'white'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    data.splice(index, 1);
+
+                    prosesSAW();
+
+                    localStorage.setItem(
+                        'employees',
+                        JSON.stringify(data)
+                    );
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Data berhasil dihapus',
+                        background: '#0f172a',
+                        color: 'white'
+                    });
+
+                }
+
+            });
+
+        }
+        // CHART
+
+        let chart;
+
+        function renderChart() {
+
+            let ctx = document.getElementById('chart');
+
+            if (chart) chart.destroy();
+
+            chart = new Chart(ctx, {
+
+                type: 'bar',
+
+                data: {
+
+                    labels: data.map(d => d.nama),
+
+                    datasets: [{
+
+                        label: 'Nilai SAW',
+
+                        data: data.map(d => d.score),
+
+                        borderRadius: 18,
+
+                        borderWidth: 1,
+
+                        borderColor: 'rgba(255,255,255,.08)',
+
+                        backgroundColor: (context) => {
+
+                            const chart = context.chart;
+                            const { ctx, chartArea } = chart;
+
+                            if (!chartArea) return;
+
+                            const gradient = ctx.createLinearGradient(
+                                0,
+                                chartArea.bottom,
+                                0,
+                                chartArea.top
+                            );
+
+                            gradient.addColorStop(0, 'rgba(14,165,233,.2)');
+                            gradient.addColorStop(.5, 'rgba(59,130,246,.6)');
+                            gradient.addColorStop(1, 'rgba(139,92,246,.9)');
+
+                            return gradient;
+                        }
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    plugins: {
+
+                        legend: {
+
+                            labels: {
+                                color: 'white'
+                            }
+
+                        }
+
+                    },
+
+                    animation: {
+
+                        duration: 2000,
+
+                        easing: 'easeOutQuart'
+
+                    },
+                    scales: {
+
+                        x: {
+
+                            ticks: {
+                                color: 'white'
+                            }
+
+                        },
+
+                        y: {
+
+                            ticks: {
+                                color: 'white'
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            });
+
+        }
+        function renderAIInsight() {
+
+            if (data.length === 0) return;
+
+            let terbaik = data[0];
+
+            let insight = `
+        <h2>
+            ${terbaik.nama} menjadi kandidat terbaik.
+        </h2>
+
+        <p>
+            AI mendeteksi bahwa performa ${terbaik.nama}
+            sangat stabil pada seluruh kriteria.
+            Produktivitas dan disiplin menjadi
+            faktor paling dominan.
+        </p>
+    `;
+
+            document.getElementById('aiInsight')
+                .innerHTML = insight;
+        }
+        // CLEAR
+
+        function clearForm() {
+
+            document.getElementById('nama').value = "";
+            document.getElementById('c1').value = "";
+            document.getElementById('c2').value = "";
+            document.getElementById('c3').value = "";
+            document.getElementById('c4').value = "";
+            document.getElementById('c5').value = "";
+
+        }
+
+        // PDF
+
+        async function exportPDF() {
+
+            const { jsPDF } = window.jspdf;
+
+            const doc = new jsPDF();
+
+            doc.setFillColor(2, 6, 23);
+            doc.rect(0, 0, 220, 300, 'F');
+
+            doc.setFontSize(28);
+            doc.setTextColor(255, 255, 255);
+
+            doc.text('HR-DSS AI REPORT', 20, 25);
+
+            doc.setFontSize(14);
+
+            doc.setTextColor(148, 163, 184);
+
+            doc.text('Employee Ranking Analytics', 20, 35);
+
+            let y = 60;
+
+            data.forEach((d, i) => {
+
+                doc.setFillColor(255, 255, 255, 0.04);
+
+                doc.roundedRect(20, y - 8, 170, 18, 4, 4, 'F');
+
+                doc.setTextColor(255, 255, 255);
+
+                doc.text(
+                    `${i + 1}. ${d.nama}`,
+                    25,
+                    y
+                );
+
+                doc.text(
+                    `Score : ${d.score.toFixed(3)}`,
+                    130,
+                    y
+                );
+
+                y += 25;
+
+            });
+
+            doc.save('HR-DSS-Premium-Report.pdf');
+
+        }
+
+        // EXCEL
+
+        function exportExcel() {
+
+            let worksheet = XLSX.utils.json_to_sheet(data);
+
+            let workbook = XLSX.utils.book_new();
+
+            XLSX.utils.book_append_sheet(
+                workbook,
+                worksheet,
+                "Karyawan"
+            );
+
+            XLSX.writeFile(workbook, "laporan-karyawan.xlsx");
+
+        }
+
+        // PRESENTATION MODE
+
+        function presentationMode() {
+
+            document.documentElement.requestFullscreen();
+
+            Swal.fire({
+                icon: 'info',
+                title: 'Presentation Mode',
+                text: 'Fullscreen diaktifkan',
+                background: '#0f172a',
+                color: 'white'
+            });
+
+        }
+
+        // AUTO LOAD
+
+        updateBobot();
+
+        renderTable();
+
+        document.getElementById('totalEmployee').innerHTML =
+            data.length;
+
+        if (data.some(d => d.score !== null)) {
+
+            renderTop();
+            renderChart();
+
+        }
+        window.addEventListener('load', () => {
+
+            setTimeout(() => {
+
+                document.getElementById('startupLoader')
+                    .style.display = 'none';
+
+            }, 2500);
+        });
+        function openProfile(index) {
+
+            let d = data[index];
+
+            document.getElementById('profilePopup')
+                .style.display = 'flex';
+
+            document.getElementById('profileName')
+                .innerHTML = d.nama;
+
+            document.getElementById('profileScore')
+                .innerHTML =
+                d.score !== null
+                    ? d.score.toFixed(3)
+                    : '-';
+        }
+
+        function closeProfile() {
+
+            document.getElementById('profilePopup')
+                .style.display = 'none';
+        }
+        function togglePassword() {
+
+            let pass = document.getElementById('password');
+
+            if (pass.type === 'password') {
+                pass.type = 'text';
+            } else {
+                pass.type = 'password';
+            }
+        }
+        function showFullscreenRanking() {
+
+            let html = '';
+
+            let warna = ['gold', 'silver', 'bronze'];
+
+            data.slice(0, 3).forEach((d, i) => {
+
+                html += `
+        <div class="rank-card ${warna[i]}">
+
+            <h1>#${i + 1}</h1>
+
+            <h2>${d.nama}</h2>
+
+            <p>
+                ${d.score.toFixed(3)}
+            </p>
+
+        </div>
+        `;
+            });
+
+            document.getElementById('rankingFullscreen')
+                .innerHTML = html;
+
+            document.getElementById('rankingOverlay')
+                .style.display = 'flex';
+        }
+
+        function closeRanking() {
+
+            document.getElementById('rankingOverlay')
+                .style.display = 'none';
+        }
+    </script>
+    <div class="ranking-overlay" id="rankingOverlay">
+
+        <div class="ranking-content">
+
+            <h1>
+                AI Ranking Result
+            </h1>
+
+            <div class="ranking-grid" id="rankingFullscreen"></div>
+
+            <button class="close-ranking" onclick="closeRanking()">
+                Tutup
+            </button>
+
+        </div>
+
+    </div>
+    <div class="profile-popup" id="profilePopup">
+
+        <div class="profile-card">
+
+            <div class="avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <h1 id="profileName"></h1>
+
+            <p>
+                Employee Performance Analysis
+            </p>
+
+            <div class="profile-score">
+                Score : <span id="profileScore"></span>
+            </div>
+
+            <button class="btn" onclick="closeProfile()">
+                Tutup
+            </button>
+
+        </div>
+
+    </div>
+</body>
+
+</html>
